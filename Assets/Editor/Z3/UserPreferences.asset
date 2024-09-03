@@ -15,7 +15,4 @@ MonoBehaviour:
   openWelcome: 0
   defaultAutoBindType: 3
   nameSpaces: []
-  graphPreferences:
-  - graph: {fileID: 11400000, guid: 6ee22df85ea12244d887aab3e0ceaca4, type: 2}
-    position: {x: 20, y: 43}
-    scale: 0.7561437
+  graphPreferences: []

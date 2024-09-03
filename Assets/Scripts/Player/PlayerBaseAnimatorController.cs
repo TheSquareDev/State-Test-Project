@@ -7,21 +7,39 @@ namespace PlayerAnimation
     public class PlayerBaseAnimatorController : MonoBehaviour
     {
         [SerializeField] private Animator playerAnimator;
+        [SerializeField] private float acceleration = 0.2f;
+        [SerializeField] private float deceleration = 0.25f;
+
+        private float velocity = 0f;
 
         private void Update()
         {
-            playerAnimator.SetBool("isWalking", false);
+            bool forwardPressed = Input.GetKey("w");
+            bool atackPressed = Input.GetKey("space");
+
             playerAnimator.SetBool("isAtacking", false);
 
-            if (Input.GetKey("w"))
+            if (forwardPressed && velocity < 1)
             {
-                playerAnimator.SetBool("isWalking", true);
+                velocity += Time.deltaTime * acceleration;
             }
-            if (Input.GetKey("space"))
+
+            if (!forwardPressed && velocity > 0)
+            {
+                velocity -= Time.deltaTime * deceleration;
+            }
+
+            if (!forwardPressed && velocity < 0)
+            {
+                velocity = 0;
+            }
+            
+            playerAnimator.SetFloat("Velocity", velocity);
+
+            if (atackPressed)
             {
                 playerAnimator.SetBool("isAtacking", true);
             }
         }
-
     }
 }
