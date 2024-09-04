@@ -7,8 +7,8 @@ namespace PlayerAnimation
     public class PlayerBaseAnimatorController : MonoBehaviour
     {
         [SerializeField] private Animator playerAnimator;
-        [SerializeField] private float acceleration = 0.2f;
-        [SerializeField] private float deceleration = 0.25f;
+        [SerializeField] private float acceleration;
+        [SerializeField] private float deceleration;
 
         private float velocity = 0f;
 
@@ -19,7 +19,7 @@ namespace PlayerAnimation
 
             playerAnimator.SetBool("isAtacking", false);
 
-            if (forwardPressed && velocity < 1)
+            if (forwardPressed && velocity < 0.35f)
             {
                 velocity += Time.deltaTime * acceleration;
             }
