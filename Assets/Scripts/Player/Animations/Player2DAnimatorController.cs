@@ -1,5 +1,7 @@
 using System.Collections;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace PlayerAnimation
 {
@@ -14,67 +16,77 @@ namespace PlayerAnimation
 
         private float velocityZ = 0f;
         private float velocityX = 0f;
-        private int comboCount = 0;
+        private int comboCount = -1;
         private bool isWaitingAttack;
         private Coroutine attackCoroutine;
-        private Coroutine resetComboCoroutine;
+        private PlayerInputsActions playerInputs;
+        private Vector2 inputValue = Vector2.zero;
 
+        private void Awake()
+        {
+            playerInputs = new PlayerInputsActions();
+        }
 
         private void Update()
         {
-            bool forwardPress = Input.GetKey("w");
-            bool backPress = Input.GetKey("s");
-            bool rightPress = Input.GetKey("d");
-            bool leftPress = Input.GetKey("a");
-            bool isAttacking = Input.GetKeyDown(KeyCode.Space);
+            UpdatePlayerMovementAnimation();
+            DeceleratePlayerMovementAnimation();
+        }
 
-            DeceleratePlayerVelocity();
-            SetPlayerMovement(forwardPress, backPress, rightPress, leftPress);
+        private void OnEnable()
+        {
+            playerInputs.Enable();
+            playerInputs.CharacterControls.Attack.started += SetPlayerAttack;
 
-            if (isAttacking)
+        }
+
+        private void OnDisable()
+        {
+            playerInputs.Disable();
+            playerInputs.CharacterControls.Attack.started -= SetPlayerAttack;
+        }
+
+        private void OnDestroy()
+        {
+            playerInputs.Dispose();
+        }
+
+        public void SetPlayerAttack(InputAction.CallbackContext value)
+        {
+            if (attackCoroutine != null)
             {
-                if (attackCoroutine != null)
-                {
-                    isWaitingAttack = true;
-                }
-                else
-                {
-                    Combo();
-                }
+                isWaitingAttack = true;
+            }
+            else
+            {
+                Combo();
             }
         }
 
-        private void SetPlayerMovement(bool forwardPress, bool backPress, bool rightPress, bool leftPress)
+        private void UpdatePlayerMovementAnimation()
         {
-            if (forwardPress && velocityZ < 1)
-            {
-                velocityZ += Time.deltaTime * acceleration;
-            }
-            if (backPress && velocityZ > -1)
-            {
-                velocityZ -= Time.deltaTime * acceleration;
-            }
-            if (rightPress && velocityX < 1)
-            {
-                velocityX += Time.deltaTime * acceleration;
-            }
-            if (leftPress && velocityX > -1)
-            {
-                velocityX -= Time.deltaTime * acceleration;
-            }
-            animator.SetFloat("VelocityZ", velocityZ);
+            inputValue = playerInputs.CharacterControls.Movement.ReadValue<Vector2>();
+
+            float movementOffset = Time.deltaTime * acceleration;
+
+            velocityZ += movementOffset * inputValue.y;
+            velocityX += movementOffset * inputValue.x;
+
             animator.SetFloat("VelocityX", velocityX);
+            animator.SetFloat("VelocityZ", velocityZ);
         }
-        private void DeceleratePlayerVelocity()
+        private void DeceleratePlayerMovementAnimation()
         {
+            float movementOffset = Time.deltaTime * deceleration;
+
             if (velocityZ != 0)
             {
-                velocityZ += Time.deltaTime * deceleration * (0 - velocityZ);
+                velocityZ += movementOffset * -velocityZ;
             }
 
             if (velocityX != 0)
             {
-                velocityX += Time.deltaTime * deceleration * (0 - velocityX);
+                velocityX += movementOffset *  -velocityX;
             }
 
             velocityZ = Mathf.Clamp(velocityZ, -1, 1);
@@ -83,40 +95,22 @@ namespace PlayerAnimation
 
         private void Combo()
         {
-            string attack = "";
-
-            comboCount = Mathf.Clamp(comboCount, 0, 2);
-
-            if (comboCount == 0)
-            {
-                attack = "Attacking";
-            }
-            if (comboCount == 1)
-            {
-                attack = "Attacking2";
-            }
             if (comboCount == 2)
             {
-                attack = "Attacking3";
                 comboCount = -1;
             }
 
-            if (resetComboCoroutine != null)
-            {
-                StopCoroutine(resetComboCoroutine);
-            }
-
             Debug.Log(comboCount);
-            attackCoroutine =  StartCoroutine(Attack(attack));
-
+            attackCoroutine =  StartCoroutine(Attack());
         }
 
-        private IEnumerator Attack(string attack)
+        private IEnumerator Attack()
         {
-            animator.SetTrigger(attack);
+            comboCount++;
+            animator.SetInteger("Combo", comboCount);
+            yield return new WaitUntil(() => !animator.GetCurrentAnimatorStateInfo(1).IsName("Idle"));
             AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(1);
             yield return new WaitForSeconds(info.length);
-            comboCount++;
             attackCoroutine = null;
 
             if (isWaitingAttack)
@@ -124,15 +118,11 @@ namespace PlayerAnimation
                 isWaitingAttack = false;
                 Combo();
             }
-            
-            resetComboCoroutine = StartCoroutine(ResetCombo());
+            else
+            {
+                comboCount = -1;
+                animator.SetInteger("Combo",comboCount);
+            }
         }
-
-        private IEnumerator ResetCombo()
-        {
-            yield return new WaitForSeconds(comboResetWindown);
-            comboCount = 0;
-        }
-
     }
 }

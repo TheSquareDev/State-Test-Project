@@ -1,7 +1,10 @@
 {
     "name": "PlayerAnimation",
     "rootNamespace": "PlayerAnimation",
-    "references": [],
+    "references": [
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:cc9edb12057b5504a8efe87abe2f5a39"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
