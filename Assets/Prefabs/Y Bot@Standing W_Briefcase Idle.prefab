@@ -750,10 +750,13 @@ PrefabInstance:
       addedObject: {fileID: 3032275394485597562}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ebcc5fffc7b4db4a9be71f96dbef048, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 3315282683455137278}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ebcc5fffc7b4db4a9be71f96dbef048, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 3452663399909043114}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5ebcc5fffc7b4db4a9be71f96dbef048, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 625611950496129191}
+      addedObject: {fileID: 87652593970425717}
   m_SourcePrefab: {fileID: 100100000, guid: 5ebcc5fffc7b4db4a9be71f96dbef048, type: 3}
 --- !u!1 &5638368698600069205 stripped
 GameObject:
@@ -782,6 +785,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!143 &3315282683455137278
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5638368698600069205}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1.7
+  m_Radius: 0.3
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!114 &3452663399909043114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,8 +826,8 @@ MonoBehaviour:
   animator: {fileID: 3032275394485597562}
   acceleration: 1
   deceleration: 1
-  comboResetWindown: 0.8
---- !u!114 &625611950496129191
+  comboResetWindown: 1.3
+--- !u!114 &87652593970425717
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -807,59 +836,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5638368698600069205}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Script: {fileID: 11500000, guid: 09d2db56346662c44b7f8e2e80f608e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 70b272271d56250419fa506e7a62e660, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3452663399909043114}
-        m_TargetAssemblyTypeName: PlayerAnimation.Player2DAnimatorController, PlayerAnimation
-        m_MethodName: SetPlayerMovement
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: df21763a-6f5d-46c3-886a-a254e1d7d157
-    m_ActionName: 'CharacterControls/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3452663399909043114}
-        m_TargetAssemblyTypeName: PlayerAnimation.Player2DAnimatorController, PlayerAnimation
-        m_MethodName: SetPlayerAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: b7706228-1ee3-4987-8002-c567bb37db95
-    m_ActionName: 'CharacterControls/Attack[/Keyboard/space]'
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: CharacterControls
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  CharacterController: {fileID: 3315282683455137278}
 --- !u!4 &6578430222467324620 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 5ebcc5fffc7b4db4a9be71f96dbef048, type: 3}

@@ -6,16 +6,37 @@ namespace PlayerPhysic
 {
     public class PlayerPhysicsHandler : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+
+        [SerializeField] private CharacterController CharacterController;
+
+
+        private PlayerInputsActions playerInputs;
+
+        private void Awake()
         {
-        
+            playerInputs = new PlayerInputsActions();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-        
+            CharacterController.Move(new Vector3(playerInputs.CharacterControls.Movement.ReadValue<Vector2>().x * Time.fixedDeltaTime,0,
+                playerInputs.CharacterControls.Movement.ReadValue<Vector2>().y * Time.fixedDeltaTime));
         }
+
+        private void OnEnable()
+        {
+            playerInputs.Enable();
+        }
+
+        private void OnDisable()
+        {
+            playerInputs.Disable();
+        }
+
+
+
+
+
+
     }
 }

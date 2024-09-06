@@ -7,6 +7,7 @@ namespace PlayerAnimation
     public class Player2DAnimatorController : MonoBehaviour
     {
         [SerializeField] private Animator animator;
+        [SerializeField] private CharacterController characterController;
         [SerializeField] private float acceleration;
         [SerializeField] private float deceleration;
 
@@ -63,12 +64,10 @@ namespace PlayerAnimation
 
         private void UpdatePlayerMovementAnimation()
         {
-            inputValue = playerInputs.CharacterControls.Movement.ReadValue<Vector2>();
-
             float movementOffset = Time.deltaTime * acceleration;
 
-            velocity.y += movementOffset * inputValue.y;
-            velocity.x += movementOffset * inputValue.x;
+            velocity.y += movementOffset * characterController.velocity.z;
+            velocity.x += movementOffset * characterController.velocity.x;
 
             animator.SetFloat("VelocityX", velocity.x);
             animator.SetFloat("VelocityZ", velocity.y);
@@ -87,7 +86,7 @@ namespace PlayerAnimation
                 velocity.x += movementOffset *  -velocity.x;
             }
 
-            if (velocity.sqrMagnitude < 0.0001f)
+            if (velocity.sqrMagnitude < 0.00035f)
             {
                 velocity = Vector2.zero;
             }
