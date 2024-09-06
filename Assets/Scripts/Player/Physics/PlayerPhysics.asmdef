@@ -1,0 +1,16 @@
+{
+    "name": "PlayerPhysics",
+    "rootNamespace": "PlayerPhysic",
+    "references": [
+        "GUID:cc9edb12057b5504a8efe87abe2f5a39"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

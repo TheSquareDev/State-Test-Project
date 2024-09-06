@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,8 +13,7 @@ namespace PlayerAnimation
         [Range(0,5)] 
         [SerializeField] private float comboResetWindown;
 
-        private float velocityZ = 0f;
-        private float velocityX = 0f;
+        private Vector2 velocity = Vector2.zero;
         private int comboCount = -1;
         private bool isWaitingAttack;
         private Coroutine attackCoroutine;
@@ -69,28 +67,33 @@ namespace PlayerAnimation
 
             float movementOffset = Time.deltaTime * acceleration;
 
-            velocityZ += movementOffset * inputValue.y;
-            velocityX += movementOffset * inputValue.x;
+            velocity.y += movementOffset * inputValue.y;
+            velocity.x += movementOffset * inputValue.x;
 
-            animator.SetFloat("VelocityX", velocityX);
-            animator.SetFloat("VelocityZ", velocityZ);
+            animator.SetFloat("VelocityX", velocity.x);
+            animator.SetFloat("VelocityZ", velocity.y);
         }
         private void DeceleratePlayerMovementAnimation()
         {
             float movementOffset = Time.deltaTime * deceleration;
 
-            if (velocityZ != 0)
+            if (velocity.y != 0)
             {
-                velocityZ += movementOffset * -velocityZ;
+                velocity.y += movementOffset * -velocity.y;
             }
 
-            if (velocityX != 0)
+            if (velocity.x != 0)
             {
-                velocityX += movementOffset *  -velocityX;
+                velocity.x += movementOffset *  -velocity.x;
             }
 
-            velocityZ = Mathf.Clamp(velocityZ, -1, 1);
-            velocityX = Mathf.Clamp(velocityX, -1, 1);
+            if (velocity.sqrMagnitude < 0.0001f)
+            {
+                velocity = Vector2.zero;
+            }
+
+            velocity.y = Mathf.Clamp(velocity.y, -1, 1);
+            velocity.x = Mathf.Clamp(velocity.x, -1, 1);
         }
 
         private void Combo()
